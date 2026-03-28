@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Housewarming Invitation</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Playfair Display', serif;
+      background: linear-gradient(135deg, #330000, #660000);
+      color: #fff;
+      overflow-x: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      position: relative;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 0;
+    }
+
+    .card, .card2 {
+      background: rgba(128,0,0,0.7);
+      border-radius: 40px; /* Rounded corners */
+      padding: 50px 35px;
+      max-width: 550px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+      position: absolute;
+      opacity: 0;
+      border: 6px solid;
+      border-image-slice: 1;
+      z-index: 1;
+      transition: opacity 1s ease, transform 1s ease;
+    }
+
+    .card { border-image-source: linear-gradient(135deg, #ffd700, #ff9900, #ffd700); top:50%; left:50%; transform:translate(-50%, -50%) scale(0.7); }
+    .card2 { border-image-source: linear-gradient(135deg, #ff9900, #ffd700, #ff9900); top:50%; left:50%; transform:translate(-50%, -50%) scale(0.7); }
+
+    .intro-text span { display: block; font-family: 'Roboto Slab', serif; font-weight: 700; text-transform: uppercase; font-size: 2.5rem; text-shadow: 0 0 15px #fff, 0 0 25px #ffd700; margin: 5px 0; }
+    .line1 { color: #ffd700; } 
+    .line2 { color: #ffcc66; } 
+    .line3 { color: #ffd700; } 
+    .line4 { color: #ffcc66; font-weight: normal; text-shadow: none; }
+
+    h1 { font-family: 'Roboto Slab', serif; font-weight: 700; text-transform: uppercase; font-size: 2.8rem; color: #ffd700; text-shadow: 0 0 15px #ffd700, 0 0 30px #ff9900; margin-bottom: 25px; }
+    p { font-size: 1.3rem; color: #ffcc66; margin: 10px 0; }
+    footer { margin-top: 30px; font-size: 1.1rem; color: #ffd700; text-shadow: 0 0 10px #ffd700, 0 0 20px #ff9900; opacity: 0.95; }
+
+    .sparkle { position: absolute; width: 6px; height: 6px; background: #ffd700; border-radius: 50%; animation: sparkleMove 3s infinite; opacity: 0; z-index: 2; }
+    @keyframes sparkleMove { 0% { transform: translateY(0) scale(0); opacity: 1; } 50% { transform: translateY(-50px) scale(1); opacity: 0.8; } 100% { transform: translateY(0) scale(0); opacity: 0; } }
+
+    @media (max-width: 480px){ .intro-text span{ font-size:2rem; } h1{ font-size:2.2rem; } p{ font-size:1rem; } }
+  </style>
+</head>
+<body>
+
+  <div class="overlay"></div>
+
+  <div class="card" id="card1">
+    <div class="intro-text">
+      <span class="line1">GOVINDARAJ</span>
+      <span class="line2">&</span>
+      <span class="line3">JAYABARATHI</span>
+      <span class="line4">FAMILY WELCOMES YOU</span>
+    </div>
+  </div>
+
+  <div class="card2" id="card2">
+    <h1>HOUSEWARMING CEREMONY</h1>
+    <p>We warmly invite you to our new home celebration</p>
+    <p>Date: 30th April 2026</p>
+    <p>Time: 7:30 AM onwards</p>
+    <p>Venue: South Kavarai Street, West Mambalam</p>
+    <footer>Looking forward to celebrating this special day with you!</footer>
+  </div>
+
+  <script>
+    const card1 = document.getElementById('card1');
+    const card2 = document.getElementById('card2');
+
+    // Show first card
+    card1.style.opacity = 1;
+    card1.style.transform = 'translate(-50%, -50%) scale(1)';
+
+    // Hide first card after 6 seconds and show second card
+    setTimeout(() => {
+      card1.style.opacity = 0;
+      card1.style.transform = 'translate(-50%, -50%) scale(0.7)';
+      card2.style.opacity = 1;
+      card2.style.transform = 'translate(-50%, -50%) scale(1)';
+    }, 6000);
+
+    // Sparkles
+    const sparklesContainer = document.body;
+    for(let i=0;i<40;i++){
+      const sparkle=document.createElement('div');
+      sparkle.classList.add('sparkle');
+      sparkle.style.left=Math.random()*window.innerWidth+'px';
+      sparkle.style.top=Math.random()*window.innerHeight+'px';
+      sparkle.style.animationDelay=Math.random()*3+'s';
+      sparklesContainer.appendChild(sparkle);
+    }
+  </script>
+
+</body>
+</html>
