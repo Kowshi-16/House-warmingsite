@@ -32,7 +32,7 @@
             transform-style: preserve-3d;
         }
 
-        /* Inside Content (Revealed) */
+        /* Inside Content (Invitation Card) */
         .inside-card {
             position: absolute;
             width: 100%; height: 100%;
@@ -45,7 +45,7 @@
             justify-content: center;
             text-align: center;
             padding: 20px;
-            z-index: 1;
+            z-index: 1; /* Lowest Z-index so it stays behind doors */
             box-shadow: 0 30px 60px rgba(0,0,0,0.8);
         }
 
@@ -55,33 +55,31 @@
             width: 50%; height: 100%;
             background: var(--maroon);
             border: 5px solid var(--gold);
-            z-index: 5;
+            z-index: 10; /* Higher than the card */
             transition: transform 2.2s cubic-bezier(0.645, 0.045, 0.355, 1);
             display: flex;
             justify-content: center;
             align-items: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            backface-visibility: hidden;
         }
 
         .left-door { left: 0; transform-origin: left; border-radius: 10px 0 0 10px; }
         .right-door { right: 0; transform-origin: right; border-radius: 0 10px 10px 0; }
 
-        /* Open State */
         .open .left-door { transform: rotateY(-145deg); }
         .open .right-door { transform: rotateY(145deg); }
 
-        /* Monogram Frame styled from reference */
+        /* Interlocking Monogram */
         .monogram-frame {
             position: absolute;
             width: 280px;
             height: 280px;
             border: 2px solid var(--gold);
-            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 10;
-            pointer-events: none;
         }
 
         .gj-text {
@@ -90,45 +88,38 @@
             font-size: 10.5rem;
             position: relative;
             top: -10px;
-            letter-spacing: -10px;
+            letter-spacing: -35px;
             filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
         }
 
-        .welcome-msg {
+        /* Front-door labels */
+        .welcome-msg, .tap-instruction {
             position: absolute;
-            bottom: 120px;
+            width: 100%;
             color: var(--gold);
+            text-align: center;
+            z-index: 15; /* Highest Z-index to be on top of doors */
+            transition: opacity 0.5s ease;
+        }
+
+        .welcome-msg {
+            bottom: 120px;
             font-family: 'Cinzel Decorative', serif;
             font-weight: 700;
             letter-spacing: 4px;
             font-size: 1.1rem;
-            text-align: center;
-            width: 100%;
-            z-index: 11;
         }
 
         .tap-instruction {
-            position: absolute;
             bottom: 50px;
-            width: 100%;
-            color: var(--gold);
             font-family: 'Playfair Display', serif;
-            text-align: center;
-            z-index: 20;
             letter-spacing: 2px;
             animation: pulse 2s infinite;
-        }
-        
-        .open .welcome-msg, 
-        .open .tap-instruction {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
         }
 
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-        /* Reduced size invocation */
+        /* Invitation Card Details */
         .invocation {
             font-family: 'Playfair Display', serif;
             font-weight: bold;
@@ -140,7 +131,6 @@
             letter-spacing: 2px;
         }
 
-        /* Large Title from reference */
         .main-title {
             font-family: 'Lora', serif;
             color: var(--maroon);
@@ -195,41 +185,39 @@
     <div class="door-container" id="inviteBox">
         
         <div class="door left-door">
-            <div class="monogram-frame" style="left: 0; border-right: none; border-radius: 150px 0 0 150px; width: 140px; left: 50px;">
-                <span class="gj-text" style="left: -5px;">G</span>
+            <div class="monogram-frame" style="border-right: none; border-radius: 150px 0 0 150px; width: 140px; left: 50px;">
+                <span class="gj-text" style="left: -15px;">G</span>
             </div>
         </div>
 
         <div class="door right-door">
-             <div class="monogram-frame" style="right: 0; border-left: none; border-radius: 0 150px 150px 0; width: 140px; right: 50px;">
+             <div class="monogram-frame" style="border-left: none; border-radius: 0 150px 150px 0; width: 140px; right: 50px;">
                 <span class="gj-text" style="right: 50px;">J</span>
             </div>
         </div>
 
-        <div class="welcome-msg" id="familyLine">FAMILY WELCOMES YOU</div>
-        <div class="tap-instruction" id="hint">Tap to Open</div>
+        <div class="welcome-msg" id="welcomeText">FAMILY WELCOMES YOU</div>
+        <div class="tap-instruction" id="tapText">Tap to Open</div>
 
         <div class="inside-card">
             <div style="position: absolute; top: 15px; left: 15px; right: 15px; bottom: 15px; border: 2px solid var(--gold); border-radius: 180px 180px 10px 10px; pointer-events: none;"></div>
             
             <p class="invocation">|| Muneeswaran Thunai ||</p>
-            
             <h1 class="main-title">Housewarming<br>Ceremony</h1>
             
-           <div class="details">
-    <p>Cordially Invite you & your family to grace the occasion of House Warming of our New Home</p>
-    <div class="highlight">
-        Thursday, 30th April, 2026<br>
-        7:30 AM Onwards
-    </div>
-    <p class="venue-label">:: Venue ::</p>
-    <p>
-        <strong style="color: var(--maroon); font-size: 1.1rem;">ANANTI GURU KRIPA</strong><br>
-        South Kavarai Street,<br>
-        West Mambalam, Chennai
-    </p>
-</div>
-            
+            <div class="details">
+                <p>Cordially Invite you & your family to grace the occasion of House Warming of our New Home</p>
+                <div class="highlight">
+                    Thursday, 30th April, 2026<br>
+                    7:30 AM Onwards
+                </div>
+                <p class="venue-label">:: Venue ::</p>
+                <p>
+                    <strong style="color: var(--maroon); font-size: 1.1rem;">ANANTI GURU KRIPA</strong><br>
+                    South Kavarai Street,<br>
+                    West Mambalam, Chennai
+                </p>
+            </div>
             <footer>Your presence is our blessing!</footer>
         </div>
     </div>
@@ -242,20 +230,41 @@
         let isOpened = false;
         const music = document.getElementById('bgMusic');
         const inviteBox = document.getElementById('inviteBox');
-        const hint = document.getElementById('hint');
-        const familyLine = document.getElementById('familyLine');
+        const welcomeText = document.getElementById('welcomeText');
+        const tapText = document.getElementById('tapText');
 
         function toggleDoors() {
             if (!isOpened) {
-                music.play().catch(e => console.log("Music blocked"));
-                inviteBox.classList.add('open');
-                hint.style.opacity = '0';
-                familyLine.style.opacity = '0';
                 isOpened = true;
+
+                // 1. Play music
+                music.play().catch(e => console.log("Audio blocked"));
+                
+                // 2. Hide words immediately so they are NOT visible on the card
+                welcomeText.style.display = 'none';
+                tapText.style.display = 'none';
+                
+                // 3. Open doors
+                inviteBox.classList.add('open');
+                
+                // 4. Close automatically after 13 seconds
+                setTimeout(() => {
+                    inviteBox.classList.remove('open');
+                    
+                    // Stop music
+                    music.pause();
+                    music.currentTime = 0;
+
+                    // 5. Wait for doors to finish closing (2.2s) before showing text again
+                    setTimeout(() => {
+                        welcomeText.style.display = 'block';
+                        tapText.style.display = 'block';
+                        isOpened = false;
+                    }, 2200); 
+                }, 13000); 
             }
         }
 
-        // Falling Flower Petals animation
         setInterval(() => {
             const p = document.createElement('div');
             p.className = 'petal';
