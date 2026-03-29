@@ -1,121 +1,270 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Housewarming Invitation</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GJ Housewarming Invitation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Playfair+Display:ital,wght@0,600;1,400&family=Great+Vibes&family=Lora:wght@700&display=swap" rel="stylesheet">
 
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --maroon: #5e0b0b;
+            --gold: #d4af37;
+            --cream: #fff9e6;
+        }
 
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    body {
-      font-family: 'Playfair Display', serif;
-      background: linear-gradient(135deg, #330000, #660000);
-      color: #fff;
-      overflow-x: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      position: relative;
-    }
+        body {
+            background: radial-gradient(circle, #3d0000 0%, #1a0000 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            perspective: 2000px;
+        }
 
-    .overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.4);
-      z-index: 0;
-    }
+        .door-container {
+            position: relative;
+            width: 380px;
+            height: 620px;
+            transform-style: preserve-3d;
+        }
 
-    .card, .card2 {
-      background: rgba(128,0,0,0.7);
-      border-radius: 40px; /* Rounded corners */
-      padding: 50px 35px;
-      max-width: 550px;
-      width: 90%;
-      text-align: center;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
-      position: absolute;
-      opacity: 0;
-      border: 6px solid;
-      border-image-slice: 1;
-      z-index: 1;
-      transition: opacity 1s ease, transform 1s ease;
-    }
+        /* Inside Content (Revealed) */
+        .inside-card {
+            position: absolute;
+            width: 100%; height: 100%;
+            background: var(--cream);
+            border: 12px solid var(--maroon);
+            outline: 2px solid var(--gold);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            z-index: 1;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+        }
 
-    .card { border-image-source: linear-gradient(135deg, #ffd700, #ff9900, #ffd700); top:50%; left:50%; transform:translate(-50%, -50%) scale(0.7); }
-    .card2 { border-image-source: linear-gradient(135deg, #ff9900, #ffd700, #ff9900); top:50%; left:50%; transform:translate(-50%, -50%) scale(0.7); }
+        /* The Doors */
+        .door {
+            position: absolute;
+            width: 50%; height: 100%;
+            background: var(--maroon);
+            border: 5px solid var(--gold);
+            z-index: 5;
+            transition: transform 2.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
 
-    .intro-text span { display: block; font-family: 'Roboto Slab', serif; font-weight: 700; text-transform: uppercase; font-size: 2.5rem; text-shadow: 0 0 15px #fff, 0 0 25px #ffd700; margin: 5px 0; }
-    .line1 { color: #ffd700; } 
-    .line2 { color: #ffcc66; } 
-    .line3 { color: #ffd700; } 
-    .line4 { color: #ffcc66; font-weight: normal; text-shadow: none; }
+        .left-door { left: 0; transform-origin: left; border-radius: 10px 0 0 10px; }
+        .right-door { right: 0; transform-origin: right; border-radius: 0 10px 10px 0; }
 
-    h1 { font-family: 'Roboto Slab', serif; font-weight: 700; text-transform: uppercase; font-size: 2.8rem; color: #ffd700; text-shadow: 0 0 15px #ffd700, 0 0 30px #ff9900; margin-bottom: 25px; }
-    p { font-size: 1.3rem; color: #ffcc66; margin: 10px 0; }
-    footer { margin-top: 30px; font-size: 1.1rem; color: #ffd700; text-shadow: 0 0 10px #ffd700, 0 0 20px #ff9900; opacity: 0.95; }
+        /* Open State */
+        .open .left-door { transform: rotateY(-145deg); }
+        .open .right-door { transform: rotateY(145deg); }
 
-    .sparkle { position: absolute; width: 6px; height: 6px; background: #ffd700; border-radius: 50%; animation: sparkleMove 3s infinite; opacity: 0; z-index: 2; }
-    @keyframes sparkleMove { 0% { transform: translateY(0) scale(0); opacity: 1; } 50% { transform: translateY(-50px) scale(1); opacity: 0.8; } 100% { transform: translateY(0) scale(0); opacity: 0; } }
+        /* Monogram Frame styled from reference */
+        .monogram-frame {
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            border: 2px solid var(--gold);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            pointer-events: none;
+        }
 
-    @media (max-width: 480px){ .intro-text span{ font-size:2rem; } h1{ font-size:2.2rem; } p{ font-size:1rem; } }
-  </style>
+        .gj-text {
+            font-family: 'Great Vibes', cursive;
+            color: var(--gold);
+            font-size: 10.5rem;
+            position: relative;
+            top: -10px;
+            letter-spacing: -10px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+        }
+
+        .welcome-msg {
+            position: absolute;
+            bottom: 120px;
+            color: var(--gold);
+            font-family: 'Cinzel Decorative', serif;
+            font-weight: 700;
+            letter-spacing: 4px;
+            font-size: 1.1rem;
+            text-align: center;
+            width: 100%;
+            z-index: 11;
+        }
+
+        .tap-instruction {
+            position: absolute;
+            bottom: 50px;
+            width: 100%;
+            color: var(--gold);
+            font-family: 'Playfair Display', serif;
+            text-align: center;
+            z-index: 20;
+            letter-spacing: 2px;
+            animation: pulse 2s infinite;
+        }
+        
+        .open .welcome-msg, 
+        .open .tap-instruction {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+        /* Reduced size invocation */
+        .invocation {
+            font-family: 'Playfair Display', serif;
+            font-weight: bold;
+            font-size: 0.65rem;
+            color: #888;
+            margin-top: 5px;
+            font-style: italic;
+            opacity: 0.7;
+            letter-spacing: 2px;
+        }
+
+        /* Large Title from reference */
+        .main-title {
+            font-family: 'Lora', serif;
+            color: var(--maroon);
+            font-size: 2.1rem;
+            font-weight: 700;
+            line-height: 1.1;
+            text-transform: uppercase;
+            margin: 15px 0;
+            letter-spacing: 1px;
+        }
+
+        .details {
+            font-family: 'Playfair Display', serif;
+            color: #333;
+            font-size: 1rem;
+            line-height: 1.4;
+            padding: 0 10px;
+        }
+
+        .highlight {
+            color: var(--maroon);
+            font-weight: bold;
+            border-top: 1px solid var(--gold);
+            border-bottom: 1px solid var(--gold);
+            margin: 10px 0;
+            padding: 8px 0;
+            font-size: 1.05rem;
+        }
+
+        .venue-label {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        footer {
+            margin-top: 20px;
+            color: var(--gold);
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
+        .petal {
+            position: absolute; width: 22px; height: 22px; background: #ffae00;
+            border-radius: 50% 0 50% 0; opacity: 0.5; animation: fall linear infinite;
+        }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+    </style>
 </head>
-<body>
+<body onclick="toggleDoors()">
 
-  <div class="overlay"></div>
+    <div class="door-container" id="inviteBox">
+        
+        <div class="door left-door">
+            <div class="monogram-frame" style="left: 0; border-right: none; border-radius: 150px 0 0 150px; width: 140px; left: 50px;">
+                <span class="gj-text" style="left: -5px;">G</span>
+            </div>
+        </div>
 
-  <div class="card" id="card1">
-    <div class="intro-text">
-      <span class="line1">GOVINDARAJ</span>
-      <span class="line2">&</span>
-      <span class="line3">JAYABARATHI</span>
-      <span class="line4">FAMILY WELCOMES YOU</span>
+        <div class="door right-door">
+             <div class="monogram-frame" style="right: 0; border-left: none; border-radius: 0 150px 150px 0; width: 140px; right: 50px;">
+                <span class="gj-text" style="right: 50px;">J</span>
+            </div>
+        </div>
+
+        <div class="welcome-msg" id="familyLine">FAMILY WELCOMES YOU</div>
+        <div class="tap-instruction" id="hint">Tap to Open</div>
+
+        <div class="inside-card">
+            <div style="position: absolute; top: 15px; left: 15px; right: 15px; bottom: 15px; border: 2px solid var(--gold); border-radius: 180px 180px 10px 10px; pointer-events: none;"></div>
+            
+            <p class="invocation">|| Muneeswaran Thunai ||</p>
+            
+            <h1 class="main-title">Housewarming<br>Ceremony</h1>
+            
+           <div class="details">
+    <p>Cordially Invite you & your family to grace the occasion of House Warming of our New Home</p>
+    <div class="highlight">
+        Thursday, 30th April, 2026<br>
+        7:30 AM Onwards
     </div>
-  </div>
+    <p class="venue-label">:: Venue ::</p>
+    <p>
+        <strong style="color: var(--maroon); font-size: 1.1rem;">ANANTI GURU KRIPA</strong><br>
+        South Kavarai Street,<br>
+        West Mambalam, Chennai
+    </p>
+</div>
+            
+            <footer>Your presence is our blessing!</footer>
+        </div>
+    </div>
 
-  <div class="card2" id="card2">
-    <h1>HOUSEWARMING CEREMONY</h1>
-    <p>We warmly invite you to our new home celebration</p>
-    <p>Date: 30th April 2026</p>
-    <p>Time: 7:30 AM onwards</p>
-    <p>Venue: South Kavarai Street, West Mambalam</p>
-    <footer>Looking forward to celebrating this special day with you!</footer>
-  </div>
+    <audio id="bgMusic" loop>
+        <source src="C:\Users\Bhuvanesh\Desktop\HOUSE WARMING - SITE\audio.mpeg" type="audio/mpeg">
+    </audio>
 
-  <script>
-    const card1 = document.getElementById('card1');
-    const card2 = document.getElementById('card2');
+    <script>
+        let isOpened = false;
+        const music = document.getElementById('bgMusic');
+        const inviteBox = document.getElementById('inviteBox');
+        const hint = document.getElementById('hint');
+        const familyLine = document.getElementById('familyLine');
 
-    // Show first card
-    card1.style.opacity = 1;
-    card1.style.transform = 'translate(-50%, -50%) scale(1)';
+        function toggleDoors() {
+            if (!isOpened) {
+                music.play().catch(e => console.log("Music blocked"));
+                inviteBox.classList.add('open');
+                hint.style.opacity = '0';
+                familyLine.style.opacity = '0';
+                isOpened = true;
+            }
+        }
 
-    // Hide first card after 6 seconds and show second card
-    setTimeout(() => {
-      card1.style.opacity = 0;
-      card1.style.transform = 'translate(-50%, -50%) scale(0.7)';
-      card2.style.opacity = 1;
-      card2.style.transform = 'translate(-50%, -50%) scale(1)';
-    }, 6000);
-
-    // Sparkles
-    const sparklesContainer = document.body;
-    for(let i=0;i<40;i++){
-      const sparkle=document.createElement('div');
-      sparkle.classList.add('sparkle');
-      sparkle.style.left=Math.random()*window.innerWidth+'px';
-      sparkle.style.top=Math.random()*window.innerHeight+'px';
-      sparkle.style.animationDelay=Math.random()*3+'s';
-      sparklesContainer.appendChild(sparkle);
-    }
-  </script>
-
+        // Falling Flower Petals animation
+        setInterval(() => {
+            const p = document.createElement('div');
+            p.className = 'petal';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.top = '-20px';
+            p.style.animationDuration = (Math.random() * 2 + 4) + 's';
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 6000);
+        }, 400);
+    </script>
 </body>
 </html>
